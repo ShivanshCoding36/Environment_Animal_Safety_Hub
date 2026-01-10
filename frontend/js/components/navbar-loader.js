@@ -40,7 +40,12 @@ async function loadNavbar() {
     if (!window.initThemeToggle && !document.querySelector('script[src*="theme-toggle.js"]')) {
         const themeScript = document.createElement('script');
         themeScript.src = prefix + 'js/global/theme-toggle.js';
+        themeScript.onload = () => {
+            if (typeof initThemeToggle === 'function') initThemeToggle();
+        };
         document.head.appendChild(themeScript);
+    } else if (typeof initThemeToggle === 'function') {
+        initThemeToggle();
     }
 
     try {
@@ -68,14 +73,9 @@ async function loadNavbar() {
         // Initialize navbar core logic
         initNavbarLogic(isLoggedIn);
         
-        // Initialize theme toggle
+        // Re-init theme toggle if navbar was just injected
         if (typeof initThemeToggle === 'function') {
             initThemeToggle();
-        } else {
-            // Wait for script to load if it was dynamic
-            setTimeout(() => {
-                if (typeof initThemeToggle === 'function') initThemeToggle();
-            }, 500);
         }
         
         // Update paths for sub-pages
