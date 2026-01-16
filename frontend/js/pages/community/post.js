@@ -47,11 +47,23 @@ function loadPost(count = 3) {
         <i class="fa-regular fa-heart like-btn"></i>
         <i class="fa-regular fa-comment comment-btn"></i>
         <i class="fa-regular fa-bookmark save-btn"></i>
+        <i class="fa-solid fa-volume-high tts-btn" title="Read Aloud"></i>
       </div>
 
       <div class="post-stats">
         <span class="likes-count">${post.likes}</span> likes • 
         <span class="comments-count">${post.comments}</span> comments
+      </div>
+
+      <div class="emoji-reactions">
+        <div class="emoji-reaction" data-emoji="thumbsup">
+          <span class="emoji-icon">👍</span>
+          <span class="emoji-count">0</span>
+        </div>
+        <div class="emoji-reaction" data-emoji="thumbsdown">
+          <span class="emoji-icon">👎</span>
+          <span class="emoji-count">0</span>
+        </div>
       </div>
 
       <div class="comment-panel column" style="display:none;">
@@ -69,6 +81,8 @@ function loadPost(count = 3) {
     const likeBtn = postCard.querySelector(".like-btn");
     const saveBtn = postCard.querySelector(".save-btn");
     const commentBtn = postCard.querySelector(".comment-btn");
+    const ttsBtn = postCard.querySelector(".tts-btn");
+    const postDesc = postCard.querySelector(".post-desc");
     const commentPanel = postCard.querySelector(".comment-panel");
     const addCommentBtn = postCard.querySelector(".add-comment-btn");
     const commentInput = postCard.querySelector(".comment-input");
@@ -80,7 +94,7 @@ function loadPost(count = 3) {
     // Like
     likeBtn.addEventListener("click", () => {
       likeBtn.classList.toggle("active");
-      likeBtn.classList.contains("active") 
+      likeBtn.classList.contains("active")
         ? likeBtn.classList.replace("fa-regular", "fa-solid")
         : likeBtn.classList.replace("fa-solid", "fa-regular");
 
@@ -106,7 +120,7 @@ function loadPost(count = 3) {
     // Add comment
     addCommentBtn.addEventListener("click", () => {
       const text = commentInput.value.trim();
-      if(text !== "") {
+      if (text !== "") {
         const commentEl = document.createElement("div");
         commentEl.classList.add("comment-item");
         commentEl.textContent = text;
@@ -120,6 +134,58 @@ function loadPost(count = 3) {
         commentInput.value = "";
         updateNoCommentText();
       }
+    });
+
+    // Text-to-Speech
+    let currentUtterance = null;
+    ttsBtn.addEventListener("click", () => {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        ttsBtn.classList.remove("active");
+        ttsBtn.classList.replace("fa-stop", "fa-volume-high");
+      } else {
+        const text = postDesc.textContent.trim();
+        if (text !== "") {
+          currentUtterance = new SpeechSynthesisUtterance(text);
+          currentUtterance.lang = "en-US";
+          currentUtterance.rate = 1.0;
+          currentUtterance.pitch = 1.0;
+
+          currentUtterance.onend = () => {
+            ttsBtn.classList.remove("active");
+            ttsBtn.classList.replace("fa-stop", "fa-volume-high");
+          };
+
+          currentUtterance.onerror = () => {
+            ttsBtn.classList.remove("active");
+            ttsBtn.classList.replace("fa-stop", "fa-volume-high");
+          };
+
+          window.speechSynthesis.speak(currentUtterance);
+          ttsBtn.classList.add("active");
+          ttsBtn.classList.replace("fa-volume-high", "fa-stop");
+        }
+      }
+    });
+
+    // Emoji Reactions
+    const emojiReactions = postCard.querySelectorAll(".emoji-reaction");
+    emojiReactions.forEach(reaction => {
+      reaction.addEventListener("click", () => {
+        const emojiCount = reaction.querySelector(".emoji-count");
+        let count = parseInt(emojiCount.textContent);
+
+        // Toggle reaction - if already clicked, decrease count, else increase
+        if (reaction.classList.contains("active")) {
+          count = Math.max(0, count - 1);
+          reaction.classList.remove("active");
+        } else {
+          count += 1;
+          reaction.classList.add("active");
+        }
+
+        emojiCount.textContent = count;
+      });
     });
 
     function updateNoCommentText() {
@@ -156,7 +222,7 @@ closeModal.addEventListener("click", () => {
 });
 
 window.addEventListener("click", (e) => {
-  if(e.target === modal){
+  if (e.target === modal) {
     modal.style.display = "none";
   }
 });
@@ -166,7 +232,7 @@ submitPostBtn.addEventListener("click", () => {
   const desc = postDescInput.value.trim();
   const imageFile = postImageInput.files[0];
 
-  if(!desc && !imageFile) return alert("Add description or image");
+  if (!desc && !imageFile) return alert("Add description or image");
 
   const postCard = document.createElement("div");
   postCard.className = "post-card";
@@ -185,10 +251,21 @@ submitPostBtn.addEventListener("click", () => {
       <i class="fa-regular fa-heart like-btn"></i>
       <i class="fa-regular fa-comment comment-btn"></i>
       <i class="fa-regular fa-bookmark save-btn"></i>
+      <i class="fa-solid fa-volume-high tts-btn" title="Read Aloud"></i>
     </div>
     <div class="post-stats">
       <span class="likes-count">0</span> likes • 
       <span class="comments-count">0</span> comments
+    </div>
+    <div class="emoji-reactions">
+      <div class="emoji-reaction" data-emoji="thumbsup">
+        <span class="emoji-icon">👍</span>
+        <span class="emoji-count">0</span>
+      </div>
+      <div class="emoji-reaction" data-emoji="thumbsdown">
+        <span class="emoji-icon">👎</span>
+        <span class="emoji-count">0</span>
+      </div>
     </div>
     <div class="comment-panel column" style="display:none;">
       <div class="comments-list column"></div>
@@ -210,10 +287,12 @@ submitPostBtn.addEventListener("click", () => {
 });
 
 // Function to attach likes/comments/save listeners
-function attachPostListeners(postCard){
+function attachPostListeners(postCard) {
   const likeBtn = postCard.querySelector(".like-btn");
   const saveBtn = postCard.querySelector(".save-btn");
   const commentBtn = postCard.querySelector(".comment-btn");
+  const ttsBtn = postCard.querySelector(".tts-btn");
+  const postDesc = postCard.querySelector(".post-desc");
   const commentPanel = postCard.querySelector(".comment-panel");
   const addCommentBtn = postCard.querySelector(".add-comment-btn");
   const commentInput = postCard.querySelector(".comment-input");
@@ -246,7 +325,7 @@ function attachPostListeners(postCard){
   // Add comment
   addCommentBtn.addEventListener("click", () => {
     const text = commentInput.value.trim();
-    if(text !== ""){
+    if (text !== "") {
       const commentEl = document.createElement("div");
       commentEl.classList.add("comment-item");
       commentEl.textContent = text;
@@ -259,5 +338,57 @@ function attachPostListeners(postCard){
       commentInput.value = "";
       noComment.style.display = "none";
     }
+  });
+
+  // Text-to-Speech
+  let currentUtterance = null;
+  ttsBtn.addEventListener("click", () => {
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      ttsBtn.classList.remove("active");
+      ttsBtn.classList.replace("fa-stop", "fa-volume-high");
+    } else {
+      const text = postDesc.textContent.trim();
+      if (text !== "") {
+        currentUtterance = new SpeechSynthesisUtterance(text);
+        currentUtterance.lang = "en-US";
+        currentUtterance.rate = 1.0;
+        currentUtterance.pitch = 1.0;
+
+        currentUtterance.onend = () => {
+          ttsBtn.classList.remove("active");
+          ttsBtn.classList.replace("fa-stop", "fa-volume-high");
+        };
+
+        currentUtterance.onerror = () => {
+          ttsBtn.classList.remove("active");
+          ttsBtn.classList.replace("fa-stop", "fa-volume-high");
+        };
+
+        window.speechSynthesis.speak(currentUtterance);
+        ttsBtn.classList.add("active");
+        ttsBtn.classList.replace("fa-volume-high", "fa-stop");
+      }
+    }
+  });
+
+  // Emoji Reactions
+  const emojiReactions = postCard.querySelectorAll(".emoji-reaction");
+  emojiReactions.forEach(reaction => {
+    reaction.addEventListener("click", () => {
+      const emojiCount = reaction.querySelector(".emoji-count");
+      let count = parseInt(emojiCount.textContent);
+
+      // Toggle reaction - if already clicked, decrease count, else increase
+      if (reaction.classList.contains("active")) {
+        count = Math.max(0, count - 1);
+        reaction.classList.remove("active");
+      } else {
+        count += 1;
+        reaction.classList.add("active");
+      }
+
+      emojiCount.textContent = count;
+    });
   });
 }
