@@ -1,6 +1,9 @@
-/* Progress Bar Styles */
-.progress-bar-container {
-    margin-bottom: 20px;
+﻿
+:root{
+  --green:#2e7d32;
+  --light:#e8f5e9;
+  --bg:#f4fbf6;
+  --shadow:0 20px 40px rgba(0,0,0,.12);
 }
 
 .progress-bar {
@@ -46,4 +49,24 @@
     background: #e8f5e9;
 }
 
-/* Existing styles can be added here if needed */
+/* RESULT */
+#resultScreen{display:none;text-align:center}
+.score{
+  font-size:3rem;
+  color:var(--green);
+  margin:10px 0;
+}
+
+/* BACK */
+.back-wrapper{
+  display:flex;
+  justify-content:center;
+  margin-top:40px;
+}
+
+footer{
+  text-align:center;
+  padding:20px;
+  font-size:.9rem;
+  color:#666;
+}
