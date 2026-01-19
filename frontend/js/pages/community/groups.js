@@ -185,7 +185,9 @@ function getCategoryName(category) {
         'wildlife': 'Wildlife Conservation',
         'sustainable': 'Sustainable Living',
         'education': 'Environmental Education',
-        'animal-welfare': 'Animal Welfare'
+        'animal-welfare': 'Animal Welfare',
+        'climate': 'Climate Action',
+        'ocean': 'Ocean Cleanups'
     };
     return categories[category] || category;
 }
