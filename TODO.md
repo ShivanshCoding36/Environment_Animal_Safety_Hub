@@ -1,14 +1,28 @@
-# TODO: Add Audio Feedback for Quiz Interactions
+# User Progress Tracking for Quizzes Feature Implementation
 
-## Tasks
-- [x] Add mute toggle button to navbar.html next to theme toggle
-- [ ] Create placeholder audio files: click.mp3, correct.mp3, incorrect.mp3, timer-warning.mp3 in frontend/assets/audio/ (Note: create_file tool failing, may need manual addition)
-- [x] Update quiz.js to integrate audio playback:
-  - Add mute status check and audio play functions
-  - Play click.mp3 in selectOption
-  - Play correct.mp3 or incorrect.mp3 in nextQuestion
-  - Play clap.mp3 in showResult
-  - Play timer-warning.mp3 once in updateTime when time < 30
-- [ ] Test audio playback and mute functionality
-- [x] Ensure mute preference persists in localStorage
-- [ ] Verify no conflicts with existing animations
+## Tasks to Complete
+
+### 1. Enhance Main Quiz (quiz.html, quiz.js, quiz.css)
+- [x] Add customizable progress bar to quiz.html
+- [x] Style progress bar in quiz.css
+- [x] Add pause/resume buttons to quiz.html
+- [x] Update quiz.js to track timestamps for each answer
+- [x] Update quiz.js to calculate and display time spent, questions completed
+- [x] Improve saveProgress in quiz.js to include timestamps per question
+
+### 2. Implement Progress Tracking for Other Quizzes
+- [ ] Update waste-management-quiz.js with save/load progress functions
+- [ ] Add progress bar to waste-management-quiz.html
+- [ ] Add pause/resume to waste-management-quiz.html and JS
+- [ ] Check and update other quiz files if needed (e.g., environment-awareness-quiz.js)
+
+### 3. Admin Insights
+- [ ] Create new admin-insights.html page
+- [ ] Implement JS to aggregate localStorage data for metrics (average time, correct answers, etc.)
+- [ ] Style the admin insights page
+
+### 4. Testing and Compatibility
+- [ ] Test progress tracking in main quiz
+- [ ] Test progress tracking in waste-management quiz
+- [ ] Ensure compatibility across all quizzes
+- [ ] Update TODO.md with completed tasks
