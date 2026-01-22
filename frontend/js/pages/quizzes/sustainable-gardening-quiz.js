@@ -86,4 +86,5 @@ sustainableGardeningQuiz.initializeQuiz();
 
 // Global functions for HTML onclick handlers
 window.startQuiz = () => sustainableGardeningQuiz.startQuiz();
+window.resumeQuiz = () => sustainableGardeningQuiz.resumeQuiz();
 window.nextQuestion = () => sustainableGardeningQuiz.nextQuestion();

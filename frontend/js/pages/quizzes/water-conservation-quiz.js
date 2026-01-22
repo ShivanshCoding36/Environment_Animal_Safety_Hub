@@ -110,4 +110,5 @@ waterConservationQuiz.initializeQuiz();
 
 // Global functions for HTML onclick handlers
 window.startQuiz = () => waterConservationQuiz.startQuiz();
+window.resumeQuiz = () => waterConservationQuiz.resumeQuiz();
 window.nextQuestion = () => waterConservationQuiz.nextQuestion();
