@@ -52,12 +52,13 @@ pollutionAwarenessQuiz.loadQuestion = function() {
   BaseQuiz.prototype.loadQuestion.call(this);
 
   // Update custom progress metrics
-  if (this.config.elements.progressText) {
+  const timeSpentEl = document.getElementById('timeSpent');
+  if (timeSpentEl) {
     const timeSpent = this.config.timeLimit - this.time;
-    this.config.elements.progressText.textContent = `Time Spent: ${timeSpent}s`;
+    timeSpentEl.textContent = `Time Spent: ${timeSpent}s`;
   }
 
-  const questionsCompleted = document.querySelector('.progress-metrics span:last-child');
+  const questionsCompleted = document.getElementById('questionsCompleted');
   if (questionsCompleted) {
     questionsCompleted.textContent = `Completed: ${this.index + 1}/${this.questions.length}`;
   }
